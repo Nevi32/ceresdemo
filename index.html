@@ -6,12 +6,17 @@
     <title>Project Ceres | Agricultural Intelligence Platform</title>
     
     <!-- External Resources -->
-    <script src="https://cdn.tailwindcss.com "></script>
-    <script src="https://unpkg.com/lucide@latest "></script>
-    <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.11/dist/dotlottie-wc.js " type="module"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.11/dist/dotlottie-wc.js" type="module"></script>
+    
+    <!-- Document Parsing Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300 ;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     
     <!-- External CSS -->
     <link rel="stylesheet" href="styles.css">
@@ -25,7 +30,7 @@
     <nav class="fixed top-0 w-full bg-white/80 backdrop-blur-xl border-b border-slate-100 z-50 px-6 py-4">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <div class="flex items-center gap-4">
-                <img src="https://res.cloudinary.com/dpymwa41m/image/upload/v1762274479/Gemini_Generated_Image_q2kbiiq2kbiiq2kb-removebg-preview_zw2pnk.png " 
+                <img src="https://res.cloudinary.com/dpymwa41m/image/upload/v1762274479/Gemini_Generated_Image_q2kbiiq2kbiiq2kb-removebg-preview_zw2pnk.png" 
                      alt="Ceres" 
                      class="h-10 w-auto object-contain grayscale contrast-125">
                 <div class="h-6 w-px bg-slate-200"></div>
@@ -62,7 +67,7 @@
             <div class="relative z-10 text-center max-w-4xl mx-auto px-6">
                 <!-- Large Logo -->
                 <div class="mb-12 transform scale-125 drop-shadow-2xl">
-                    <img src="https://res.cloudinary.com/dpymwa41m/image/upload/v1762274479/Gemini_Generated_Image_q2kbiiq2kbiiq2kb-removebg-preview_zw2pnk.png " 
+                    <img src="https://res.cloudinary.com/dpymwa41m/image/upload/v1762274479/Gemini_Generated_Image_q2kbiiq2kbiiq2kb-removebg-preview_zw2pnk.png" 
                          alt="Ceres" 
                          class="h-72 w-auto object-contain mx-auto">
                 </div>
@@ -115,7 +120,7 @@
             <div class="text-center max-w-md mx-auto px-8">
                 <div class="w-80 h-80 mx-auto mb-8">
                     <dotlottie-wc 
-                        src="https://lottie.host/fe8f74b1-ae89-480b-aa21-b6640248b594/6vvDDa6rei.lottie " 
+                        src="https://lottie.host/fe8f74b1-ae89-480b-aa21-b6640248b594/6vvDDa6rei.lottie" 
                         loop
                         autoplay>
                     </dotlottie-wc>
@@ -219,30 +224,19 @@
                         <div class="mt-8 pt-6 border-t border-slate-100">
                             <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Identity Verification Documents</label>
                             <div id="upload-id" class="upload-zone rounded-xl p-6 cursor-pointer" onclick="document.getElementById('file-id').click()">
-                                <input type="file" id="file-id" class="hidden" accept=".pdf,.jpg,.png" onchange="handleUpload('id', this)">
-                                <div id="id-placeholder" class="flex items-center gap-4">
-                                    <div class="w-10 h-10 bg-slate-50 rounded-lg flex items-center justify-center">
-                                        <i data-lucide="file-up" class="w-5 h-5 text-slate-400"></i>
-                                    </div>
-                                    <div>
-                                        <p class="text-sm font-medium text-slate-900">Upload ID/Passport & Registration</p>
-                                        <p class="text-xs text-slate-400">PDF, JPG, or PNG format</p>
-                                    </div>
-                                </div>
-                                <div id="id-complete" class="hidden flex items-center justify-between">
-                                    <div class="flex items-center gap-4">
-                                        <div class="w-10 h-10 bg-slate-900 rounded-lg flex items-center justify-center">
-                                            <i data-lucide="check" class="w-5 h-5 text-white"></i>
+                                <input type="file" id="file-id" class="hidden" accept=".pdf,.jpg,.png" multiple onchange="handleUpload('id', this)">
+                                <div id="id-placeholder" class="text-center">
+                                    <div class="flex items-center gap-4 justify-center">
+                                        <div class="w-10 h-10 bg-slate-50 rounded-lg flex items-center justify-center">
+                                            <i data-lucide="file-up" class="w-5 h-5 text-slate-400"></i>
                                         </div>
                                         <div>
-                                            <p class="text-sm font-medium text-slate-900" id="id-filename">document.pdf</p>
-                                            <p class="text-xs text-slate-500">Identity verified</p>
+                                            <p class="text-sm font-medium text-slate-900">Upload ID/Passport & Registration</p>
+                                            <p class="text-xs text-slate-400">PDF, JPG, or PNG format (Multiple files allowed)</p>
                                         </div>
                                     </div>
-                                    <button onclick="event.stopPropagation(); removeUpload('id')" class="p-2 hover:bg-slate-100 rounded-lg">
-                                        <i data-lucide="x" class="w-4 h-4 text-slate-400"></i>
-                                    </button>
                                 </div>
+                                <div id="id-files-list" class="hidden mt-4 space-y-2 max-h-32 overflow-y-auto"></div>
                             </div>
                         </div>
                     </div>
@@ -276,31 +270,20 @@
                             </div>
                         </div>
 
-                        <div class="upload-zone rounded-xl p-6 cursor-pointer" onclick="document.getElementById('file-bank').click()">
-                            <input type="file" id="file-bank" class="hidden" accept=".pdf,.csv,.xlsx" onchange="handleUpload('bank', this)">
-                            <div id="bank-placeholder" class="flex items-center gap-4">
-                                <div class="w-10 h-10 bg-slate-50 rounded-lg flex items-center justify-center">
-                                    <i data-lucide="sheet" class="w-5 h-5 text-slate-400"></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm font-medium text-slate-900">Bank Statements (6 months)</p>
-                                    <p class="text-xs text-slate-400">PDF, CSV, or Excel format</p>
-                                </div>
-                            </div>
-                            <div id="bank-complete" class="hidden flex items-center justify-between">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
-                                        <i data-lucide="check" class="w-5 h-5 text-white"></i>
+                        <div id="upload-bank" class="upload-zone rounded-xl p-6 cursor-pointer" onclick="document.getElementById('file-bank').click()">
+                            <input type="file" id="file-bank" class="hidden" accept=".pdf,.csv,.xlsx" multiple onchange="handleUpload('bank', this)">
+                            <div id="bank-placeholder" class="text-center">
+                                <div class="flex items-center gap-4 justify-center">
+                                    <div class="w-10 h-10 bg-slate-50 rounded-lg flex items-center justify-center">
+                                        <i data-lucide="sheet" class="w-5 h-5 text-slate-400"></i>
                                     </div>
                                     <div>
-                                        <p class="text-sm font-medium text-slate-900" id="bank-filename">statements.pdf</p>
-                                        <p class="text-xs text-slate-500">6 months analyzed</p>
+                                        <p class="text-sm font-medium text-slate-900">Bank Statements (6 months)</p>
+                                        <p class="text-xs text-slate-400">PDF, CSV, or Excel format (Multiple files allowed)</p>
                                     </div>
                                 </div>
-                                <button onclick="event.stopPropagation(); removeUpload('bank')" class="p-2 hover:bg-slate-100 rounded-lg">
-                                    <i data-lucide="x" class="w-4 h-4 text-slate-400"></i>
-                                </button>
                             </div>
+                            <div id="bank-files-list" class="hidden mt-4 space-y-2 max-h-32 overflow-y-auto"></div>
                         </div>
                     </div>
 
@@ -427,20 +410,14 @@
 
                             <div class="pt-6 border-t border-slate-800">
                                 <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Herd Records (CSV/Excel)</label>
-                                <div class="border border-dashed border-slate-700 rounded-xl p-6 cursor-pointer hover:border-slate-500 transition-colors" onclick="document.getElementById('file-herd').click()">
-                                    <input type="file" id="file-herd" class="hidden" accept=".csv,.xlsx,.pdf" onchange="handleUpload('herd', this)">
+                                <div id="upload-herd" class="border border-dashed border-slate-700 rounded-xl p-6 cursor-pointer hover:border-slate-500 transition-colors" onclick="document.getElementById('file-herd').click()">
+                                    <input type="file" id="file-herd" class="hidden" accept=".csv,.xlsx,.pdf" multiple onchange="handleUpload('herd', this)">
                                     <div id="herd-placeholder" class="text-center">
                                         <i data-lucide="upload-cloud" class="w-10 h-10 mx-auto mb-3 text-slate-600"></i>
                                         <p class="text-sm text-slate-300">Upload Herd Register & Health Logs</p>
-                                        <p class="text-xs text-slate-500 mt-1">CSV, Excel, or PDF format</p>
+                                        <p class="text-xs text-slate-500 mt-1">CSV, Excel, or PDF format (Multiple files allowed)</p>
                                     </div>
-                                    <div id="herd-complete" class="hidden text-center">
-                                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-3">
-                                            <i data-lucide="check" class="w-6 h-6 text-slate-900"></i>
-                                        </div>
-                                        <p class="text-sm text-white" id="herd-filename">herd_data.csv</p>
-                                        <button onclick="event.stopPropagation(); removeUpload('herd')" class="text-xs text-slate-400 hover:text-white mt-2">Remove</button>
-                                    </div>
+                                    <div id="herd-files-list" class="hidden mt-4 space-y-2 max-h-32 overflow-y-auto"></div>
                                 </div>
                             </div>
                         </div>
@@ -455,24 +432,13 @@
                             </div>
                             <span class="text-xs text-slate-400 mono">OPTIONAL</span>
                         </div>
-                        <div class="upload-zone rounded-lg p-4 cursor-pointer bg-white" onclick="document.getElementById('file-health').click()">
-                            <input type="file" id="file-health" class="hidden" accept=".pdf,.csv" onchange="handleUpload('health', this)">
+                        <div id="upload-health" class="upload-zone rounded-lg p-4 cursor-pointer bg-white" onclick="document.getElementById('file-health').click()">
+                            <input type="file" id="file-health" class="hidden" accept=".pdf,.csv" multiple onchange="handleUpload('health', this)">
                             <div id="health-placeholder" class="flex items-center gap-3">
                                 <i data-lucide="file-plus" class="w-5 h-5 text-slate-400"></i>
                                 <span class="text-sm text-slate-600">Vaccination & Treatment Records</span>
                             </div>
-                            <div id="health-complete" class="hidden flex items-center justify-between">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center">
-                                        <i data-lucide="check" class="w-4 h-4 text-white"></i>
-                                    </div>
-                                    <div>
-                                        <p class="text-sm font-medium text-slate-900" id="health-filename">health.pdf</p>
-                                        <p class="text-xs text-slate-500">Health records uploaded</p>
-                                    </div>
-                                </div>
-                                <button onclick="event.stopPropagation(); removeUpload('health')" class="text-xs text-amber-600 hover:text-amber-700 font-medium">Remove</button>
-                            </div>
+                            <div id="health-files-list" class="hidden mt-3 space-y-2 max-h-32 overflow-y-auto"></div>
                         </div>
                     </div>
                 </div>
@@ -649,7 +615,38 @@
             </div>
         </div>
 
-        <!-- STEP 5: Success -->
+        <!-- STEP 5: Thinking/Processing Animation -->
+        <div id="thinking-screen" class="hidden slide-up fixed inset-0 bg-white z-60 flex flex-col items-center justify-center">
+            <div class="text-center max-w-xl mx-auto px-8">
+                <div class="w-96 h-96 mx-auto mb-8">
+                    <dotlottie-wc 
+                        src="https://lottie.host/5e6f3c5a-5e8a-4e4f-b8c8-078c5747c98b/8x7kwnvZxC.lottie" 
+                        loop
+                        autoplay>
+                    </dotlottie-wc>
+                </div>
+                
+                <div class="space-y-3 mb-8">
+                    <h3 class="text-3xl font-bold text-slate-900 tracking-tight">Analyzing Documents</h3>
+                    <p class="text-slate-500" id="thinking-text">Processing uploaded files...</p>
+                    <div class="text-sm text-slate-400 mono" id="thinking-details"></div>
+                </div>
+                
+                <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                    <div class="h-full bg-slate-900 w-0 transition-all duration-[4000ms] ease-out" id="thinking-bar"></div>
+                </div>
+                
+                <div class="mt-6 text-xs text-slate-400">
+                    <div class="flex items-center gap-2 justify-center mb-2">
+                        <i data-lucide="brain" class="w-4 h-4"></i>
+                        AI is extracting insights from your documents
+                    </div>
+                    <div id="processing-files" class="flex flex-wrap gap-2 justify-center max-w-md mx-auto"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 6: Success -->
         <div id="success-screen" class="hidden slide-up max-w-4xl mx-auto px-6 py-12 text-center">
             <div class="mb-8 relative inline-block">
                 <div class="absolute inset-0 bg-green-500/10 blur-3xl rounded-full scale-150"></div>
@@ -665,7 +662,7 @@
                 <div class="flex items-center justify-between mb-6 pb-6 border-b border-slate-100">
                     <div class="flex items-center gap-4">
                         <div class="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center">
-                            <img src="https://res.cloudinary.com/dpymwa41m/image/upload/v1762274479/Gemini_Generated_Image_q2kbiiq2kbiiq2kb-removebg-preview_zw2pnk.png " 
+                            <img src="https://res.cloudinary.com/dpymwa41m/image/upload/v1762274479/Gemini_Generated_Image_q2kbiiq2kbiiq2kb-removebg-preview_zw2pnk.png" 
                                  alt="Ceres" 
                                  class="h-10 w-auto object-contain grayscale">
                         </div>
@@ -745,7 +742,7 @@
             </div>
         </div>
 
-        <!-- STEP 6: Past Profiles Screen -->
+        <!-- STEP 7: Past Profiles Screen -->
         <div id="profiles-screen" class="hidden slide-up max-w-7xl mx-auto px-6 py-12 pb-32">
             <div class="mb-12 flex items-end justify-between gap-6 border-b border-slate-100 pb-8">
                 <div>
